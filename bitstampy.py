@@ -33,13 +33,13 @@ def _get_auth(client_id, api_key, api_secret):
 
 def _get_nonce(): return str(int(time.time()))
 
-def hit_eur_usd_conversion_rate():
+def eur_usd_conversion_rate():
 	resp = requests.get(API_EUR_USD_CONVERSION_RATE_URL).json()
 	for field in ['buy', 'sell']:
 		resp[field] = float(resp[field])
 	return resp
 
-def hit_order_book(group = True):
+def order_book(group = True):
 	params = {'group': '1' if group else '0'}
 	resp = requests.get(API_ORDER_BOOK_URL, params = params).json()
 	for field in ['bids', 'asks']:
@@ -48,7 +48,7 @@ def hit_order_book(group = True):
 		resp[field] = int(resp[field])
 	return resp
 
-def hit_ticker():
+def ticker():
 	resp = requests.get(API_TICKER_URL).json()
 	for field in ['volume', 'last', 'bid', 'ask', 'high', 'low']:
 		resp[field] = float(resp[field])
@@ -56,7 +56,7 @@ def hit_ticker():
 		resp[field] = int(resp[field])
 	return resp
 
-def hit_transactions(offset = 0, limit = 100, sort_descending = True):
+def transactions(offset = 0, limit = 100, sort_descending = True):
 	params = {
 		'offset': str(offset),
 		'limit': str(limit),
@@ -70,4 +70,4 @@ def hit_transactions(offset = 0, limit = 100, sort_descending = True):
 			tx[field] = int(tx[field])
 	return resp
 
-print(hit_eur_usd_conversion_rate())
+print(eur_usd_conversion_rate())
