@@ -11,7 +11,7 @@ API_TRANSACTIONS_URL = API_URL + 'transactions/'
 API_EUR_USD_CONVERSION_RATE_URL = API_URL + 'eur_usd/'
 
 # Auth info
-CLIENT_ID = '643388'
+CLIENT_ID = '123456'
 API_KEY = 'APIKEY'
 API_SECRET = 'APISECRET'
 
@@ -69,5 +69,3 @@ def transactions(offset = 0, limit = 100, sort_descending = True):
 		for field in ['date', 'tid']:
 			tx[field] = int(tx[field])
 	return resp
-
-print(eur_usd_conversion_rate())

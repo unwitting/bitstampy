@@ -1,10 +1,7 @@
 bitstampy
 =========
 
-Bitstamp API wrapper for Python
-
-bitstampy provides Python wrappers for the 
-[Bitstamp API](https://www.bitstamp.net/api/).
+[Bitstamp API](https://www.bitstamp.net/api/) wrapper for Python
 
 Usage
 =====
