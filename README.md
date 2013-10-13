@@ -210,3 +210,23 @@ True / False   # Returns boolean success
 	'amount': float    ## Placed order amount
 }
 ```
+
+### Sell Limit Order ###
+
+```python
+# Place a sell order
+## amount - Amount to sell
+##        - float
+## price  - Price to ask for
+##        - float
+> bitstampy.sell_limit_order(c, k, s)
+{
+	'datetime': int,   ## Datetime placed
+	'id': string,      ## Order ID
+	'type': string,    ## Order type - one of 
+	                   ### api.SELL_LIMIT_ORDER_TYPE_BUY,
+	                   ### api.SELL_LIMIT_ORDER_TYPE_SELL
+	'price': float,    ## Placed order price
+	'amount': float    ## Placed order amount
+}
+```
