@@ -70,8 +70,9 @@ pip install bitstampy
 ##                 - int
 ## [limit = 100]   - Return this many transactions after the offset
 ##                 - int
-## [sort = 'desc'] - Results are sorted by datetime, but which way?!
-##                 - string - 'desc' or 'asc'
+## [sort = 'desc'] - Results are sorted by datetime
+##                 - string - api.TRANSACTIONS_SORT_DESCENDING or
+##                 -        - api.TRANSACTIONS_SORT_ASCENDING
 > bitstampy.transactions()
 [                         # List of transactions, length 'limit'
 	{
@@ -128,6 +129,21 @@ get you access to do actual *stuff* stuff with your account.
 	'btc_reserved': float,    # Bitcoins reserved in open orders
 	'usd_available': float,   # US Dollars available
 	'btc_available': float,   # Bitcoins available
-	'fee': float
+	'fee': float              # Account trading fee (in %)
 }
+```
+
+### User Transactions ###
+
+```python
+# Your transactions
+# Parameters
+## [offset = 0]    - Skip this many transactions before starting return list
+##                 - int
+## [limit = 100]   - Return this many transactions after the offset
+##                 - int
+## [sort = 'desc'] - Results are sorted by datetime
+##                 - string - api.USER_TRANSACTIONS_SORT_DESCENDING or
+##                 -        - api.USER_TRANSACTIONS_SORT_ASCENDING
+> bitstampy.user_transactions(c, k, s)
 ```
