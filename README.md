@@ -243,3 +243,17 @@ True / False   # Returns boolean success
 	'btc': float    # Bitcoin amount in the code
 }
 ```
+
+### Redeem Bitstamp Code ###
+
+```python
+# Redeem a bitstamp code
+## code - Bitstamp code
+##      - string
+> bitstampy.redeem_bitstamp_code(c, k, s)
+{
+	'usd': float,   # US Dollar amount added to account by code
+	'btc': float    # Bitcoin amount added to account by code
+}
+```
+ 
