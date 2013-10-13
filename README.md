@@ -146,4 +146,18 @@ get you access to do actual *stuff* stuff with your account.
 ##                 - string - api.USER_TRANSACTIONS_SORT_DESCENDING or
 ##                 -        - api.USER_TRANSACTIONS_SORT_ASCENDING
 > bitstampy.user_transactions(c, k, s)
+[                           # List of transactions, length 'limit'
+	{
+		'datetime': int,    ## Datetime
+		'id': string,       ## Transaction ID
+		'type': string,     ## Transaction type - one of
+		                    ### api.USER_TRANSACTIONS_TYPE_DEPOSIT,
+		                    ### api.USER_TRANSACTIONS_TYPE_WITHDRAWAL,
+		                    ### api.USER_TRANSACTIONS_TYPE_MARKET_TRADE
+		'usd': float,       ## US Dollar amount
+		'btc': float,       ## Bitcoin amount
+		'fee': float,       ## Transaction fee (in %)
+		'order_id': float   ## Transaction amount
+	}, ...
+]
 ```
