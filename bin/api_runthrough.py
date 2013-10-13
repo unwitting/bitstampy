@@ -1,32 +1,23 @@
 from bitstampy import api
-import getpass, sys, time
+import time
 
-client_id = sys.argv[1]
-api_key = sys.argv[2]
-api_secret = sys.argv[3]
+# Incrementally call all non-private API endpoints
 
-user_transactions = api.user_transactions(client_id, api_key, api_secret)
-print('User transactions %s' % user_transactions)
+# Ticker
+print('Ticker %s' % api.ticker())
 time.sleep(1.1)
 
-account_balance = api.account_balance(client_id, api_key, api_secret)
-print('Account balance %s' % account_balance)
-time.sleep(1.1)
-
-rate = api.eur_usd_conversion_rate()
-print('EUR/USD conversion rate %s' % rate)
-time.sleep(1.1)
-
+# Order Book
 book = api.order_book()
 book['bids'] = book['bids'][:5]
 book['asks'] = book['asks'][:5]
 print('Order book %s' % book)
 time.sleep(1.1)
 
-ticker = api.ticker()
-print('Ticker %s' % ticker)
+# Transactions
+print('Transactions %s' % api.transactions(limit = 5))
 time.sleep(1.1)
 
-transactions = api.transactions(limit = 5)
-print('Transactions %s' % transactions)
+# EUR / USD
+print('EUR / USD conversion %s' % api.eur_usd_conversion_rate())
 time.sleep(1.1)

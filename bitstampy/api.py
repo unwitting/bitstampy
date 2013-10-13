@@ -1,131 +1,98 @@
-# Standard dependencies
-import hashlib, hmac, time
-# 3rd party dependencies
-import requests
+import calls
 
 # Constants
-_API_URL = 'https://www.bitstamp.net/api/'
-_API_TICKER = {
-	'url': _API_URL + 'ticker/',
-	'method': 'get'
-}
-_API_ORDER_BOOK = {
-	'url': _API_URL + 'order_book/',
-	'method': 'get'
-}
-_API_TRANSACTIONS = {
-	'url': _API_URL + 'transactions/',
-	'method': 'get'
-}
-_API_EUR_USD_CONVERSION_RATE = {
-	'url': _API_URL + 'eur_usd/',
-	'method': 'get'
-}
-_API_ACCOUNT_BALANCE = {
-	'url': _API_URL + 'balance/',
-	'method': 'post'
-}
-_API_USER_TRANSACTIONS = {
-	'url': _API_URL + 'user_transactions/',
-	'method': 'post'
-}
+SORT_ASCENDING = 'asc'
+SORT_DESCENDING = 'desc'
+TYPE_DEPOSIT = '0'
+TYPE_WITHDRAWAL = '1'
+TYPE_MARKET_TRADE = '2'
+TYPE_BUY = '0'
+TYPE_SELL = '1'
 
-# Class definitions
-class APIError(Exception): pass
+WITHDRAWAL_REQUEST_TYPE_SEPA = '0'
+WITHDRAWAL_REQUEST_TYPE_BITCOIN = '1'
+WITHDRAWAL_REQUEST_TYPE_WIRE = '2'
+WITHDRAWAL_REQUEST_TYPE_BITSTAMP_CODE_1 = '3'
+WITHDRAWAL_REQUEST_TYPE_BITSTAMP_CODE_2 = '4'
+WITHDRAWAL_REQUEST_TYPE_MTGOX = '5'
 
-class _APICall:
-	def __init__(self, api_endpoint, parameters = {}):
-		self.url = api_endpoint['url']
-		self.method = api_endpoint['method']
-		self.parameters = parameters
-	def authorise(self, client_id, api_key, api_secret):
-		auth = _get_auth(client_id, api_key, api_secret)
-		for key in auth.keys(): self.parameters[key] = auth[key]
-		return self
-	def call(self):
-		r = None
-		if self.method == 'get':
-			r = requests.get(self.url, params = self.parameters)
-		elif self.method == 'post':
-			r = requests.post(self.url, data = self.parameters)
-		jsn = r.json()
-		if type(jsn) is dict and 'error' in jsn.keys():
-			raise APIError(jsn['error'])
-		return jsn
+WITHDRAWAL_REQUEST_STATUS_OPEN = '0'
+WITHDRAWAL_REQUEST_STATUS_IN_PROCESS = '1'
+WITHDRAWAL_REQUEST_STATUS_FINISHED = '2'
+WITHDRAWAL_REQUEST_STATUS_CANCELLED = '3'
+WITHDRAWAL_REQUEST_STATUS_FAILED = '4'
 
-def _get_auth(client_id, api_key, api_secret):
-	nonce = _get_nonce()
-	message = nonce + client_id + api_key
-	signature = hmac.new(api_secret, msg = message, digestmod = hashlib.sha256)
-	signature = signature.hexdigest().upper()
-	return {
-		'key': api_key,
-		'signature': signature,
-		'nonce': nonce
-	}
 
-def _get_nonce(): return str(int(time.time()))
-
+# Wrapper functions
 def account_balance(client_id, api_key, api_secret):
-	call = _APICall(_API_ACCOUNT_BALANCE).authorise(client_id, api_key, api_secret)
-	resp = call.call()
-	for field in ['btc_reserved', 'fee', 'btc_available', 'usd_reserved',
-		'btc_balance', 'usd_balance', 'usd_available']:
-		resp[field] = float(resp[field])
-	return resp
+	return calls.APIAccountBalanceCall().auth(client_id, api_key, api_secret).call()
 
-def eur_usd_conversion_rate():
-	call = _APICall(_API_EUR_USD_CONVERSION_RATE)
-	resp = call.call()
-	for field in ['buy', 'sell']:
-		resp[field] = float(resp[field])
-	return resp
+def bitcoin_deposit_address(client_id, api_key, api_secret):
+	return calls.APIBitcoinDepositAddressCall().auth(client_id, api_key, api_secret).call()
+
+def buy_limit_order(client_id, api_key, api_secret, amount, price):
+	return calls.APIBuyLimitOrderCall().auth(client_id, api_key, api_secret).call({
+		'amount': amount, 'price': price
+	})
+
+def cancel_order(client_id, api_key, api_secret, order_id):
+	return calls.APICancelOrderCall().auth(client_id, api_key, api_secret).call({
+		'id': order_id
+	})
+
+def check_bitstamp_code(client_id, api_key, api_secret, code):
+	return calls.APICheckBitstampCodeCall().auth(client_id, api_key, api_secret).call({
+		'code': code
+	})
+
+def eur_usd_conversion_rate(): return calls.APIEURUSDConversionRateCall().call()
+
+def open_orders(client_id, api_key, api_secret):
+	return calls.APIOpenOrdersCall().auth(client_id, api_key, api_secret).call()
 
 def order_book(group = True):
-	params = {'group': '1' if group else '0'}
-	call = _APICall(_API_ORDER_BOOK, params)
-	resp = call.call()
-	for field in ['bids', 'asks']:
-		resp[field] = [[float(pr), float(amnt)] for (pr, amnt) in resp[field]]
-	for field in ['timestamp']:
-		resp[field] = int(resp[field])
-	return resp
+	return calls.APIOrderBookCall().call({
+		'group': '1' if group else '0'
+	})
 
-def ticker():
-	call = _APICall(_API_TICKER)
-	resp = call.call()
-	for field in ['volume', 'last', 'bid', 'ask', 'high', 'low']:
-		resp[field] = float(resp[field])
-	for field in ['timestamp']:
-		resp[field] = int(resp[field])
-	return resp
+def redeem_bitstamp_code(client_id, api_key, api_secret, code):
+	return calls.APIRedeemBitstampCodeCall().auth(client_id, api_key, api_secret).call({
+		'code': code
+	})
 
-def transactions(offset = 0, limit = 100, sort_descending = True):
-	params = {
-		'offset': str(offset),
-		'limit': str(limit),
-		'sort': 'desc' if sort_descending else 'asc'
-	}
-	call = _APICall(_API_TRANSACTIONS, params)
-	resp = call.call()
-	for tx in resp:
-		for field in ['price', 'amount']:
-			tx[field] = float(tx[field])
-		for field in ['date', 'tid']:
-			tx[field] = int(tx[field])
-	return resp
+def ripple_deposit_address(client_id, api_key, api_secret):
+	return calls.APIRippleDepositAddressCall().auth(client_id, api_key, api_secret).call()
+
+def ripple_withdrawal(client_id, api_key, api_secret, amount, address, currency):
+	return calls.APIRippleWithdrawalCall().auth(client_id, api_key, api_secret).call()
+
+def sell_limit_order(client_id, api_key, api_secret, amount, price):
+	return calls.APISellLimitOrderCall().auth(client_id, api_key, api_secret).call({
+		'amount': amount, 'price': price
+	})
+
+def ticker(): return calls.APITickerCall().call()
+
+def transactions(offset = 0, limit = 100, sort = SORT_DESCENDING):
+	return calls.APITransactionsCall().call({
+		'offset': offset, 'limit': limit, 'sort': sort
+	})
+
+def unconfirmed_bitcoin_deposits(client_id, api_key, api_secret):
+	return calls.APIUnconfirmedBitcoinDepositsCall().auth(
+		client_id, api_key, api_secret).call()
 
 def user_transactions(client_id, api_key, api_secret, 
-	offset = 0, limit = 100, sort_descending = True):
-	params = {
-		'offset': str(offset), 
-		'limit': str(limit), 
-		'sort': 'desc' if sort_descending else 'asc'}
-	call = _APICall(_API_USER_TRANSACTIONS, params).authorise(client_id, api_key, api_secret)
-	resp = call.call()
-	for tx in resp:
-		for field in ['usd', 'btc', 'fee']:
-			tx[field] = float(tx[field])
-		for field in ['datetime', 'id', 'type', 'order_id']:
-			tx[field] = int(tx[field])
-	return resp
+	offset = 0, limit = 100, sort = SORT_DESCENDING):
+	return calls.APIUserTransactionsCall().auth(client_id, api_key, api_secret).call({
+		'offset': offset, 'limit': limit, 'sort': sort
+	})
+
+def withdrawal(client_id, api_key, api_secret, amount, address):
+	return calls.APIWithdrawalCall().auth(client_id, api_key, api_secret).call({
+		'amount': amount,
+		'address': address
+	})
+
+def withdrawal_requests(client_id, api_key, api_secret):
+	return calls.APIWithdrawalRequestsCall().auth(client_id, api_key, api_secret).call()

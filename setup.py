@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
 	name = 'bitstampy',
-	version = '0.0.3',
+	version = '0.0.4',
 	author = 'https://github.com/unwitting',
 	author_email = 'jackprestonuk@gmail.com',
 	packages = ['bitstampy'],
