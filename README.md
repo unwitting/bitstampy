@@ -201,13 +201,13 @@ True / False   # Returns boolean success
 ##        - float
 > bitstampy.buy_limit_order(c, k, s)
 {
-	'datetime': int,   ## Datetime placed
-	'id': string,      ## Order ID
-	'type': string,    ## Order type - one of 
-	                   ### api.BUY_LIMIT_ORDER_TYPE_BUY,
-	                   ### api.BUY_LIMIT_ORDER_TYPE_SELL
-	'price': float,    ## Placed order price
-	'amount': float    ## Placed order amount
+	'datetime': int,   # Datetime placed
+	'id': string,      # Order ID
+	'type': string,    # Order type - one of 
+	                   ## api.BUY_LIMIT_ORDER_TYPE_BUY,
+	                   ## api.BUY_LIMIT_ORDER_TYPE_SELL
+	'price': float,    # Placed order price
+	'amount': float    # Placed order amount
 }
 ```
 
@@ -221,12 +221,25 @@ True / False   # Returns boolean success
 ##        - float
 > bitstampy.sell_limit_order(c, k, s)
 {
-	'datetime': int,   ## Datetime placed
-	'id': string,      ## Order ID
-	'type': string,    ## Order type - one of 
-	                   ### api.SELL_LIMIT_ORDER_TYPE_BUY,
-	                   ### api.SELL_LIMIT_ORDER_TYPE_SELL
-	'price': float,    ## Placed order price
-	'amount': float    ## Placed order amount
+	'datetime': int,   # Datetime placed
+	'id': string,      # Order ID
+	'type': string,    # Order type - one of 
+	                   ## api.SELL_LIMIT_ORDER_TYPE_BUY,
+	                   ## api.SELL_LIMIT_ORDER_TYPE_SELL
+	'price': float,    # Placed order price
+	'amount': float    # Placed order amount
+}
+```
+
+### Check Bitstamp Code ###
+
+```python
+# Check the value of a bitstamp code
+## code - Bitstamp code
+##      - string
+> bitstampy.check_bitstamp_code(c, k, s)
+{
+	'usd': float,   # US Dollar amount in the code
+	'btc': float    # Bitcoin amount in the code
 }
 ```
