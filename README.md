@@ -179,3 +179,15 @@ get you access to do actual *stuff* stuff with your account.
 	}, ...
 ]
 ```
+
+### Cancel Order ###
+
+```python
+# Cancel an order
+# Parameters
+## id - ID of order to cancel
+##    - string
+> bitstampy.cancel_order(c, k, s)
+True / False   # Returns boolean success
+```
+
