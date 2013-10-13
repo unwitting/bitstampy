@@ -18,20 +18,35 @@ bitstampy currently provides support for the un-authorised calls to the API:
 # Ticker information
 > bitstampy.ticker()
 {
+	'timestamp': int,
 	'volume': float,   # Last 24 hours volume
 	'last': float,     # Last BTC price
 	'high': float,     # Last 24 hours high
 	'low': float,      # Last 24 hours low
 	'bid': float,      # Highest buy order
-	'ask': float,      # Lowest ask order
-	'timestamp': int
+	'ask': float       # Lowest ask order
 }
 ```
 
 **Order Book**
+
 ```python
+# Global order book (what's displayed [here](https://www.bitstamp.net/market/order_book/))
 > bitstampy.order_book(group = True)
-{u'timestamp': 1381337763, u'bids': [[125.78, 0.81093974], [125.77, 0.77920013], ...], u'asks': [[50000.0, 0.01], [63000.0, 1.0], ...]}
+{
+	'timestamp': int,
+	'bids': [                 # List of bids
+		{
+			'price': float,   ## Price for bid
+			'amount': float   ## Amount bid
+		}, ...
+	],
+	'asks': [                 # List of asks
+		{
+			'price': float,   ## Price for ask
+			'amount': float   ## Amount asked
+		}, ...
+	]
 ```
 
 **Transactions**
