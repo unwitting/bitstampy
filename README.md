@@ -191,3 +191,22 @@ get you access to do actual *stuff* stuff with your account.
 True / False   # Returns boolean success
 ```
 
+### Buy Limit Order ###
+
+```python
+# Place a buy order
+## amount - Amount to buy
+##        - float
+## price  - Price to offer
+##        - float
+> bitstampy.buy_limit_order(c, k, s)
+{
+	'datetime': int,   ## Datetime placed
+	'id': string,      ## Order ID
+	'type': string,    ## Order type - one of 
+	                   ### api.BUY_LIMIT_ORDER_TYPE_BUY,
+	                   ### api.BUY_LIMIT_ORDER_TYPE_SELL
+	'price': float,    ## Placed order price
+	'amount': float    ## Placed order amount
+}
+```
