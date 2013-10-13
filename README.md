@@ -161,3 +161,21 @@ get you access to do actual *stuff* stuff with your account.
 	}, ...
 ]
 ```
+
+### Open Orders ###
+
+```python
+# Your open orders
+> bitstampy.open_orders(c, k, s)
+[                          # List of open orders
+	{
+		'datetime': int,   ## Datetime
+		'id': string,      ## Order ID
+		'type': string,    ## Order type - one of
+		                   ### api.OPEN_ORDERS_TYPE_BUY,
+		                   ### api.OPEN_ORDERS_TYPE_SELL
+		'price': float,    ## Order price
+		'amount': float    ## Order amount
+	}, ...
+]
+```
