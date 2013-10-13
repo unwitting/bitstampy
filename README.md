@@ -4,6 +4,11 @@
 
 # Installation
 
+Is pretty bloody easy, as long as you've got **pip** installed.
+If you haven't, take a look at the 
+[pip documentation](http://www.pip-installer.org/en/latest/index.html) - 
+it's worth getting familiar with!
+
 ```
 pip install bitstampy
 ```
