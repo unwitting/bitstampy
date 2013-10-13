@@ -18,13 +18,13 @@ bitstampy currently provides support for the un-authorised calls to the API:
 # Ticker information
 > bitstampy.ticker()
 {
-	'timestamp': int,
-	'volume': float,   # Last 24 hours volume
-	'last': float,     # Last BTC price
-	'high': float,     # Last 24 hours high
-	'low': float,      # Last 24 hours low
-	'bid': float,      # Highest buy order
-	'ask': float       # Lowest ask order
+	'timestamp': int,   # Datetime
+	'volume': float,    # Last 24 hours volume
+	'last': float,      # Last BTC price
+	'high': float,      # Last 24 hours high
+	'low': float,       # Last 24 hours low
+	'bid': float,       # Highest buy order
+	'ask': float        # Lowest ask order
 }
 ```
 
@@ -32,10 +32,12 @@ bitstampy currently provides support for the un-authorised calls to the API:
 
 ```python
 # Global order book (see live at https://www.bitstamp.net/market/order_book/)
-## group - Group orders with same price? [default = True]
-> bitstampy.order_book(group = True)
+# Parameters
+## [group = True] - Group orders with same price?
+##                - boolean
+> bitstampy.order_book()
 {
-	'timestamp': int,
+	'timestamp': int,         # Datetime
 	'bids': [                 # List of bids
 		{
 			'price': float,   ## Price for bid
@@ -51,9 +53,25 @@ bitstampy currently provides support for the un-authorised calls to the API:
 ```
 
 **Transactions**
+
 ```python
-> bitstampy.transactions(offset = 0, limit = 100, sort_descending = True)
-[{u'date': 1381337887, u'tid': 1523169, u'price': 125.78, u'amount': 0.06363003}, {u'date': 1381337838, u'tid': 1523168, u'price': 125.78, u'amount': 0.12543023}, ...]
+# Global transactions
+# Parameters
+## [offset = 0]    - Skip this many transactions before starting return list
+##                 - int
+## [limit = 100]   - Return this many transactions after the offset
+##                 - int
+## [sort = 'desc'] - Results are sorted by datetime, but which way?!
+##                 - string - 'desc' or 'asc'
+> bitstampy.transactions()
+[                         # List of transactions, length 'limit'
+	{
+		'date': int,      ## Datetime
+		'tid': string,    ## Transaction ID
+		'price': float,   ## Transaction price
+		'amount': float   ## Transaction amount
+	}, ...
+]
 ```
 
 **EUR/USD Conversion Rate**
