@@ -16,10 +16,10 @@ pip install bitstampy
 # Usage #
 
 ```python
-import bitstampy
+> import bitstampy
 ```
 
-## Public Calls (no API authorisation needed) ##
+## Public calls (no API authorisation needed) ##
 
 ### Ticker ###
 
@@ -93,3 +93,23 @@ import bitstampy
 	'buy': float     # Conversion rate for buying
 }
 ```
+
+## Private calls (authorisation required) ##
+
+Every call after this point requires you to have a working API key and secret
+associated with your account on Bitstampy.
+To get one set up, head to your Account > Security > API Access.
+Choose a set of permissions you'd like the key to have - the meaning of each
+of these should be pretty clear. After you've *created* a key, you need to 
+*activate* it - this is done via a confirmation link in an email.
+
+You'll get an API key and an associated secret. Note these down in your 
+incredibly secure password manager / encrypted system / sneaky hidden notepad
+of choice, because Bitstampy'll only let you view the API secret for 5 minutes
+after you activate it ('cus security).
+
+Each of the following API function calls takes three additional parameters - 
+`client_id`, `api_key` and `api_secret`. The API key and secret are obvious, 
+and `client_id` is your customer ID on Bitstampy (the numerical one).
+
+Let's see the rest of the calls!
