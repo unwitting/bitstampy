@@ -1,13 +1,17 @@
 import calls
 
 # Constants
-SORT_ASCENDING = 'asc'
-SORT_DESCENDING = 'desc'
 TYPE_DEPOSIT = '0'
 TYPE_WITHDRAWAL = '1'
 TYPE_MARKET_TRADE = '2'
 TYPE_BUY = '0'
 TYPE_SELL = '1'
+
+TRANSACTIONS_SORT_ASCENDING = 'asc'
+TRANSACTIONS_SORT_DESCENDING = 'desc'
+
+USER_TRANSACTIONS_SORT_ASCENDING = 'asc'
+USER_TRANSACTIONS_SORT_DESCENDING = 'desc'
 
 WITHDRAWAL_REQUEST_TYPE_SEPA = '0'
 WITHDRAWAL_REQUEST_TYPE_BITCOIN = '1'
@@ -73,7 +77,7 @@ def sell_limit_order(client_id, api_key, api_secret, amount, price):
 
 def ticker(): return calls.APITickerCall().call()
 
-def transactions(offset = 0, limit = 100, sort = SORT_DESCENDING):
+def transactions(offset = 0, limit = 100, sort = TRANSACTIONS_SORT_DESCENDING):
 	return calls.APITransactionsCall().call({
 		'offset': offset, 'limit': limit, 'sort': sort
 	})
@@ -83,7 +87,7 @@ def unconfirmed_bitcoin_deposits(client_id, api_key, api_secret):
 		client_id, api_key, api_secret).call()
 
 def user_transactions(client_id, api_key, api_secret, 
-	offset = 0, limit = 100, sort = SORT_DESCENDING):
+	offset = 0, limit = 100, sort = USER_TRANSACTIONS_SORT_DESCENDING):
 	return calls.APIUserTransactionsCall().auth(client_id, api_key, api_secret).call({
 		'offset': offset, 'limit': limit, 'sort': sort
 	})
