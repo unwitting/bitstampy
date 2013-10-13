@@ -31,7 +31,7 @@ bitstampy currently provides support for the un-authorised calls to the API:
 **Order Book**
 
 ```python
-# Global order book (what's displayed [here](https://www.bitstamp.net/market/order_book/))
+# Global order book (see live at https://www.bitstamp.net/market/order_book/)
 > bitstampy.order_book(group = True)
 {
 	'timestamp': int,
