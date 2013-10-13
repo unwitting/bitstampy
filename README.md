@@ -256,4 +256,31 @@ True / False   # Returns boolean success
 	'btc': float    # Bitcoin amount added to account by code
 }
 ```
- 
+
+### Withdrawal Requests ###
+
+```python
+# Get list of withdrawal requests
+> bitstampy.withdrawal_requests(c, k, s)
+[                           # List of withdrawal requests
+	{
+		'datetime': int,    ## Datetime
+		'id': string,       ## Withdrawal ID
+		'type': string,     ## Request type - one of
+		                    ### api.WITHDRAWAL_REQUEST_TYPE_SEPA,
+		                    ### api.WITHDRAWAL_REQUEST_TYPE_BITCOIN,
+		                    ### api.WITHDRAWAL_REQUEST_TYPE_WIRE,
+		                    ### api.WITHDRAWAL_REQUEST_TYPE_BITSTAMP_CODE_1,
+		                    ### api.WITHDRAWAL_REQUEST_TYPE_BITSTAMP_CODE_2,
+		                    ### api.WITHDRAWAL_REQUEST_TYPE_MTGOX
+		'status': string,   ## Request status - one of
+		                    ### api.WITHDRAWAL_REQUEST_STATUS_OPEN,
+		                    ### api.WITHDRAWAL_REQUEST_STATUS_IN_PROCESS,
+		                    ### api.WITHDRAWAL_REQUEST_STATUS_FINISHED,
+		                    ### api.WITHDRAWAL_REQUEST_STATUS_CANCELLED,
+		                    ### api.WITHDRAWAL_REQUEST_STATUS_FAILED
+		'amount': float,    ## Request amount
+		'data': string      ## Extra data (specific to type)
+	}, ...
+]
+```
