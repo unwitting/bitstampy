@@ -1,18 +1,22 @@
-bitstampy
-=========
+# bitstampy #
 
 [Bitstamp API](https://www.bitstamp.net/api/) wrapper for Python
 
-Usage
-=====
+# Installation
+
+```
+pip install bitstampy
+```
+
+# Usage #
 
 ```python
 import bitstampy
 ```
 
-bitstampy currently provides support for the un-authorised calls to the API:
+## Public Calls (no API authorisation needed) ##
 
-**Ticker**
+### Ticker ###
 
 ```python
 # Ticker information
@@ -28,7 +32,7 @@ bitstampy currently provides support for the un-authorised calls to the API:
 }
 ```
 
-**Order Book**
+### Order Book ###
 
 ```python
 # Global order book (see live at https://www.bitstamp.net/market/order_book/)
@@ -52,7 +56,7 @@ bitstampy currently provides support for the un-authorised calls to the API:
 	]
 ```
 
-**Transactions**
+### Transactions ###
 
 ```python
 # Global transactions
@@ -74,10 +78,13 @@ bitstampy currently provides support for the un-authorised calls to the API:
 ]
 ```
 
-**EUR/USD Conversion Rate**
-```python
-> bitstampy.eur_usd_conversion_rate()
-{u'sell': 1.3508, u'buy': 1.3618}
-```
+### EUR/USD Conversion Rate ###
 
-Support is on the way for authorised requests, watch this space.
+```python
+# Bitstamp's Dollar to Euro conversion rate
+> bitstampy.eur_usd_conversion_rate()
+{
+	'sell': float,   # Conversion rate for selling
+	'buy': float     # Conversion rate for buying
+}
+```
