@@ -110,6 +110,24 @@ after you activate it ('cus security).
 
 Each of the following API function calls takes three additional parameters - 
 `client_id`, `api_key` and `api_secret`. The API key and secret are obvious, 
-and `client_id` is your customer ID on Bitstampy (the numerical one).
+and `client_id` is your customer ID on Bitstampy (the numerical one). I'll 
+include them in the function prototypes abbreviated as `c`, `k`, `s`.
 
-Let's see the rest of the calls!
+Let's see the rest of the calls! These are the interesting ones because they
+get you access to do actual *stuff* stuff with your account.
+
+### Account Balance ###
+
+```python
+# Your account balance
+> bitstampy.account_balance(c, k, s)
+{
+	'usd_balance': float,     # US Dollar balance
+	'btc_balance': float,     # Bitcoin balance
+	'usd_reserved': float,    # US Dollars reserved in open orders
+	'btc_reserved': float,    # Bitcoins reserved in open orders
+	'usd_available': float,   # US Dollars available
+	'btc_available': float,   # Bitcoins available
+	'fee': float
+}
+```
