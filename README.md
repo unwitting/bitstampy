@@ -297,3 +297,12 @@ True / False   # Returns boolean success
 > bitstampy.bitcoin_withdrawal(c, k, s)
 True / False   # Returns boolean success
 ```
+
+### Bitcoin Deposit Address ###
+
+```python
+# Get your account's address for bitcoin deposits
+> bitstampy.bitcoin_deposit_address(c, k, s)
+# Returns deposit address as string
+```
+
