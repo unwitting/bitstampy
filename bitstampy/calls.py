@@ -18,7 +18,7 @@ def dt(timestamp):
         timestamp = int(timestamp)
     except ValueError:
         timestamp = time.mktime(
-            time.strptime(timestamp, '%Y-%m-%d %H:%M:%S.%f'))
+            time.strptime(timestamp, '%Y-%m-%d %H:%M:%S'))
     return datetime.datetime.fromtimestamp(timestamp)
 
 
