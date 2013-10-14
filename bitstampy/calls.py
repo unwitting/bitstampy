@@ -10,11 +10,16 @@ _API_URL = 'https://www.bitstamp.net/api/'
 
 def dt(timestamp):
     """
-    Convert a unix timestamp to a datetime object.
+    Convert a unix timestamp or ISO 8601 date string to a datetime object.
     """
     if not timestamp:
         return None
-    return datetime.datetime.fromtimestamp(int(timestamp))
+    try:
+        timestamp = int(timestamp)
+    except ValueError:
+        timestamp = time.mktime(
+            time.strptime(timestamp, '%Y-%m-%d %H:%M:%S.%f'))
+    return datetime.datetime.fromtimestamp(timestamp)
 
 
 class APIError(Exception):
