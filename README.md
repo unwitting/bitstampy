@@ -46,14 +46,14 @@ pip install bitstampy
 ##                - boolean
 > bitstampy.order_book()
 {
-    'timestamp': datetime,              # Datetime
-    'bids': [                           # List of bids
+    'timestamp': datetime,      # Datetime
+    'bids': [                   # List of bids
         {
             'price': decimal,   ## Price for bid
             'amount': decimal   ## Amount bid
         }, ...
     ],
-    'asks': [                           # List of asks
+    'asks': [                   # List of asks
         {
             'price': decimal,   ## Price for ask
             'amount': decimal   ## Amount asked
@@ -75,7 +75,7 @@ pip install bitstampy
 ##                 - string - api.TRANSACTIONS_SORT_DESCENDING or
 ##                 -        - api.TRANSACTIONS_SORT_ASCENDING
 > bitstampy.transactions()
-[                                   # List of transactions, length 'limit'
+[                           # List of transactions, length 'limit'
     {
         'date': datetime,   ## Datetime
         'tid': string,      ## Transaction ID
@@ -147,7 +147,7 @@ get you access to do actual *stuff* stuff with your account.
 ##                 - string - api.USER_TRANSACTIONS_SORT_DESCENDING or
 ##                 -        - api.USER_TRANSACTIONS_SORT_ASCENDING
 > bitstampy.user_transactions(c, k, s)
-[                                       # List of transactions, length 'limit'
+[                               # List of transactions, length 'limit'
     {
         'datetime': datetime,   ## Datetime
         'id': string,           ## Transaction ID
@@ -168,7 +168,7 @@ get you access to do actual *stuff* stuff with your account.
 ```python
 # Your open orders
 > bitstampy.open_orders(c, k, s)
-[                                       # List of open orders
+[                               # List of open orders
     {
         'datetime': datetime,   ## Datetime
         'id': string,           ## Order ID
@@ -263,7 +263,7 @@ True / False   # Returns boolean success
 ```python
 # Get list of withdrawal requests
 > bitstampy.withdrawal_requests(c, k, s)
-[                                       # List of withdrawal requests
+[                               # List of withdrawal requests
     {
         'datetime': datetime,   ## Datetime
         'id': string,           ## Withdrawal ID
