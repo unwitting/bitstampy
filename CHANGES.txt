@@ -2,3 +2,4 @@ v0.0.1, 2013-10-11 -- Initial release
 v0.0.2, 2013-10-11 -- Got rid of Unicode strings
 v0.0.3, 2013-10-11 -- Added account balance and user transactions calls
 v0.0.4, 2013-10-13 -- Added remaining calls, moved to OO approach
+v0.0.5, 2013-10-14 -- Thread- and reuse-safe authorised calls
