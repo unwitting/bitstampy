@@ -15,61 +15,72 @@ class APICall(object):
     url = None
     method = 'get'
 
-    def __init__(self):
-        self.parameters = {}
-        self.response = None
+    def _process_response(self, response):
+        """
+        Process the response dictionary.
 
-    def _process_response(self):
-        pass
+        If the dictionary is just being altered, then no return is necessary.
+        Alternatively, a totally different response can be returned.
 
-    def call(self, params={}):
-        # Load parameters
-        self.parameters.update(params)
+        Subclasses must override this method.
+        """
+        raise NotImplementedError()
+
+    def call(self, **params):
         # Form request
         r = None
         url = _API_URL + self.url
         if self.method == 'get':
-            r = requests.get(url, params=self.parameters)
+            r = requests.get(url, params=params)
         elif self.method == 'post':
-            r = requests.post(url, data=self.parameters)
-        self.response = r.json()
+            r = requests.post(url, data=params)
+        response = r.json()
         # API error?
-        if isinstance(self.response, dict) and 'error' in self.response:
-            raise APIError(self.response['error'])
+        if isinstance(response, dict) and 'error' in response:
+            raise APIError(response['error'])
         # Process fields
-        self._process_response()
-        return self.response
+        new_response = self._process_response(response)
+        if new_response is not None:
+            response = new_response
+        return response
 
 
 class APIPrivateCall(APICall):
     method = 'post'
 
+    def __init__(self, client_id, api_key, api_secret, *args, **kwargs):
+        super(APIPrivateCall, self).__init__(*args, **kwargs)
+        self.client_id = client_id
+        self.api_key = api_key
+        self.api_secret = api_secret
+
     def _get_nonce(self):
         return str(int(time.time()))
 
-    def auth(self, client_id, api_key, api_secret):
+    def call(self, **params):
         nonce = self._get_nonce()
-        message = nonce + client_id + api_key
-        signature = hmac.new(api_secret, msg=message, digestmod=hashlib.sha256)
+        message = nonce + self.client_id + self.api_key
+        signature = hmac.new(
+            self.api_secret, msg=message, digestmod=hashlib.sha256)
         signature = signature.hexdigest().upper()
-        self.parameters['key'] = api_key
-        self.parameters['signature'] = signature
-        self.parameters['nonce'] = nonce
-        return self
+        params.update({
+            'key': self.api_key, 'signature': signature, 'nonce': nonce
+        })
+        return super(APIPrivateCall, self).call(**params)
 
 
 # Specific call classes
 class APIAccountBalanceCall(APIPrivateCall):
     url = 'balance/'
 
-    def _process_response(self):
-        self.response['btc_reserved'] = Decimal(self.response['btc_reserved'])
-        self.response['btc_available'] = Decimal(self.response['btc_available'])
-        self.response['btc_balance'] = Decimal(self.response['btc_balance'])
-        self.response['usd_reserved'] = Decimal(self.response['usd_reserved'])
-        self.response['usd_available'] = Decimal(self.response['usd_available'])
-        self.response['usd_balance'] = Decimal(self.response['usd_balance'])
-        self.response['fee'] = Decimal(self.response['fee'])
+    def _process_response(self, response):
+        response['btc_reserved'] = Decimal(response['btc_reserved'])
+        response['btc_available'] = Decimal(response['btc_available'])
+        response['btc_balance'] = Decimal(response['btc_balance'])
+        response['usd_reserved'] = Decimal(response['usd_reserved'])
+        response['usd_available'] = Decimal(response['usd_available'])
+        response['usd_balance'] = Decimal(response['usd_balance'])
+        response['fee'] = Decimal(response['fee'])
 
 
 class APIBitcoinDepositAddressCall(APIPrivateCall):
@@ -79,55 +90,55 @@ class APIBitcoinDepositAddressCall(APIPrivateCall):
 class APIBuyLimitOrderCall(APIPrivateCall):
     url = 'buy/'
 
-    def _process_response(self):
-        self.response['datetime'] = int(self.response['datetime'])
-        self.response['price'] = Decimal(self.response['price'])
-        self.response['amount'] = Decimal(self.response['amount'])
+    def _process_response(self, response):
+        response['datetime'] = int(response['datetime'])
+        response['price'] = Decimal(response['price'])
+        response['amount'] = Decimal(response['amount'])
 
 
 class APICancelOrderCall(APIPrivateCall):
     url = 'cancel_order/'
 
-    def _process_response(self):
-        self.response = (self.response == 'true')
+    def _process_response(self, response):
+        return (response == 'true')
 
 
 class APICheckBitstampCodeCall(APIPrivateCall):
     url = 'check_code/'
 
-    def _process_response(self):
-        self.response['usd'] = Decimal(self.response['usd'])
-        self.response['btc'] = Decimal(self.response['btc'])
+    def _process_response(self, response):
+        response['usd'] = Decimal(response['usd'])
+        response['btc'] = Decimal(response['btc'])
 
 
 class APIEURUSDConversionRateCall(APICall):
     url = 'eur_usd/'
 
-    def _process_response(self):
-        self.response['buy'] = Decimal(self.response['buy'])
-        self.response['sell'] = Decimal(self.response['sell'])
+    def _process_response(self, response):
+        response['buy'] = Decimal(response['buy'])
+        response['sell'] = Decimal(response['sell'])
 
 
 class APIOrderBookCall(APICall):
     url = 'order_book/'
 
-    def _process_response(self):
-        self.response['timestamp'] = int(self.response['timestamp'])
-        self.response['bids'] = [{
+    def _process_response(self, response):
+        response['timestamp'] = int(response['timestamp'])
+        response['bids'] = [{
             'price': Decimal(price),
             'amount': Decimal(amount)
-        } for (price, amount) in self.response['bids']]
-        self.response['asks'] = [{
+        } for (price, amount) in response['bids']]
+        response['asks'] = [{
             'price': Decimal(price),
             'amount': Decimal(amount)
-        } for (price, amount) in self.response['asks']]
+        } for (price, amount) in response['asks']]
 
 
 class APIOpenOrdersCall(APIPrivateCall):
     url = 'open_orders/'
 
-    def _process_response(self):
-        for order in self.response:
+    def _process_response(self, response):
+        for order in response:
             order['datetime'] = int(order['datetime'])
             order['price'] = Decimal(order['price'])
             order['amount'] = Decimal(order['amount'])
@@ -136,9 +147,9 @@ class APIOpenOrdersCall(APIPrivateCall):
 class APIRedeemBitstampCodeCall(APIPrivateCall):
     url = 'redeem_code/'
 
-    def _process_response(self):
-        self.response['usd'] = Decimal(self.response['usd'])
-        self.response['btc'] = Decimal(self.response['btc'])
+    def _process_response(self, response):
+        response['usd'] = Decimal(response['usd'])
+        response['btc'] = Decimal(response['btc'])
 
 
 class APIRippleDepositAddressCall(APIPrivateCall):
@@ -148,37 +159,37 @@ class APIRippleDepositAddressCall(APIPrivateCall):
 class APIRippleWithdrawalCall(APIPrivateCall):
     url = 'ripple_withdrawal/'
 
-    def _process_response(self):
-        self.response = (self.response == 'true')
+    def _process_response(self, response):
+        return (response == 'true')
 
 
 class APISellLimitOrderCall(APIPrivateCall):
     url = 'sell/'
 
-    def _process_response(self):
-        self.response['datetime'] = int(self.response['datetime'])
-        self.response['price'] = Decimal(self.response['price'])
-        self.response['amount'] = Decimal(self.response['amount'])
+    def _process_response(self, response):
+        response['datetime'] = int(response['datetime'])
+        response['price'] = Decimal(response['price'])
+        response['amount'] = Decimal(response['amount'])
 
 
 class APITickerCall(APICall):
     url = 'ticker/'
 
-    def _process_response(self):
-        self.response['last'] = Decimal(self.response['last'])
-        self.response['high'] = Decimal(self.response['high'])
-        self.response['low'] = Decimal(self.response['low'])
-        self.response['volume'] = Decimal(self.response['volume'])
-        self.response['timestamp'] = int(self.response['timestamp'])
-        self.response['bid'] = Decimal(self.response['bid'])
-        self.response['ask'] = Decimal(self.response['ask'])
+    def _process_response(self, response):
+        response['last'] = Decimal(response['last'])
+        response['high'] = Decimal(response['high'])
+        response['low'] = Decimal(response['low'])
+        response['volume'] = Decimal(response['volume'])
+        response['timestamp'] = int(response['timestamp'])
+        response['bid'] = Decimal(response['bid'])
+        response['ask'] = Decimal(response['ask'])
 
 
 class APITransactionsCall(APICall):
     url = 'transactions/'
 
-    def _process_response(self):
-        for tx in self.response:
+    def _process_response(self, response):
+        for tx in response:
             tx['date'] = int(tx['date'])
             tx['price'] = Decimal(tx['price'])
             tx['amount'] = Decimal(tx['amount'])
@@ -187,16 +198,16 @@ class APITransactionsCall(APICall):
 class APIUnconfirmedBitcoinDepositsCall(APIPrivateCall):
     url = 'unconfirmed_btc/'
 
-    def _process_response(self):
-        self.response['amount'] = Decimal(self.response['amount'])
-        self.response['confirmations'] = int(self.response['confirmations'])
+    def _process_response(self, response):
+        response['amount'] = Decimal(response['amount'])
+        response['confirmations'] = int(response['confirmations'])
 
 
 class APIUserTransactionsCall(APIPrivateCall):
     url = 'user_transactions/'
 
-    def _process_response(self):
-        for tx in self.response:
+    def _process_response(self, response):
+        for tx in response:
             tx['datetime'] = int(tx['datetime'])
             tx['usd'] = Decimal(tx['usd'])
             tx['btc'] = Decimal(tx['btc'])
@@ -206,14 +217,14 @@ class APIUserTransactionsCall(APIPrivateCall):
 class APIWithdrawalCall(APIPrivateCall):
     url = 'bitcoin_withdrawal/'
 
-    def _process_response(self):
-        self.response = (self.response == 'true')
+    def _process_response(self, response):
+        return (response == 'true')
 
 
 class APIWithdrawalRequestsCall(APIPrivateCall):
     url = 'withdrawal_requests/'
 
-    def _process_response(self):
-        for wr in self.response:
+    def _process_response(self, response):
+        for wr in response:
             wr['datetime'] = int(wr['datetime'])
             wr['amount'] = Decimal(wr['amount'])
