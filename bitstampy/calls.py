@@ -10,7 +10,7 @@ class APIError(Exception):
     pass
 
 
-class APICall:
+class APICall(object):
     url = None
     method = 'get'
 
@@ -23,8 +23,7 @@ class APICall:
 
     def call(self, params={}):
         # Load parameters
-        for k in params.keys():
-            self.parameters[k] = params[k]
+        self.parameters.update(params)
         # Form request
         r = None
         url = _API_URL + self.url
@@ -34,7 +33,7 @@ class APICall:
             r = requests.post(url, data=self.parameters)
         self.response = r.json()
         # API error?
-        if type(self.response) is dict and 'error' in self.response.keys():
+        if isinstance(self.response, dict) and 'error' in self.response:
             raise APIError(self.response['error'])
         # Process fields
         self._process_response()
