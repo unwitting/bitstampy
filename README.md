@@ -285,3 +285,15 @@ True / False   # Returns boolean success
     }, ...
 ]
 ```
+
+### Bitcoin Withdrawal ###
+
+```python
+# Withdraw bitcoins to an address
+## amount  - amount to withdraw in BTC
+##         - decimal
+## address - bitcoin address to withdraw to
+##         - string
+> bitstampy.bitcoin_withdrawal(c, k, s)
+True / False   # Returns boolean success
+```
