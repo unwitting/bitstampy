@@ -17,8 +17,12 @@ def dt(timestamp):
     try:
         timestamp = int(timestamp)
     except ValueError:
-        timestamp = time.mktime(
-            time.strptime(timestamp, '%Y-%m-%d %H:%M:%S'))
+        try:
+            timestamp = time.mktime(
+                time.strptime(timestamp, '%Y-%m-%d %H:%M:%S.%f'))
+        except ValueError:
+            timestamp = time.mktime(
+                time.strptime(timestamp, '%Y-%m-%d %H:%M:%S'))
     return datetime.datetime.fromtimestamp(timestamp)
 
 
@@ -113,7 +117,7 @@ class APICancelOrderCall(APIPrivateCall):
     url = 'cancel_order/'
 
     def _process_response(self, response):
-        return (response == 'true')
+        return (response == True)
 
 
 class APICheckBitstampCodeCall(APIPrivateCall):
@@ -173,7 +177,7 @@ class APIRippleWithdrawalCall(APIPrivateCall):
     url = 'ripple_withdrawal/'
 
     def _process_response(self, response):
-        return (response == 'true')
+        return (response == True)
 
 
 class APISellLimitOrderCall(APIPrivateCall):
@@ -231,7 +235,7 @@ class APIWithdrawalCall(APIPrivateCall):
     url = 'bitcoin_withdrawal/'
 
     def _process_response(self, response):
-        return (response == 'true')
+        return (response == True)
 
 
 class APIWithdrawalRequestsCall(APIPrivateCall):
