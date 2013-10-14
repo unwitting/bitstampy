@@ -27,13 +27,13 @@ pip install bitstampy
 # Ticker information
 > bitstampy.ticker()
 {
-	'timestamp': int,   # Datetime
-	'volume': float,    # Last 24 hours volume
-	'last': float,      # Last BTC price
-	'high': float,      # Last 24 hours high
-	'low': float,       # Last 24 hours low
-	'bid': float,       # Highest buy order
-	'ask': float        # Lowest ask order
+	'timestamp': datetime,   # Datetime
+	'volume': decimal,       # Last 24 hours volume
+	'last': decimal,         # Last BTC price
+	'high': decimal,         # Last 24 hours high
+	'low': decimal,          # Last 24 hours low
+	'bid': decimal,          # Highest buy order
+	'ask': decimal           # Lowest ask order
 }
 ```
 
@@ -46,17 +46,17 @@ pip install bitstampy
 ##                - boolean
 > bitstampy.order_book()
 {
-	'timestamp': int,         # Datetime
-	'bids': [                 # List of bids
+	'timestamp': datetime,      # Datetime
+	'bids': [                   # List of bids
 		{
-			'price': float,   ## Price for bid
-			'amount': float   ## Amount bid
+			'price': decimal,   ## Price for bid
+			'amount': decimal   ## Amount bid
 		}, ...
 	],
-	'asks': [                 # List of asks
+	'asks': [                   # List of asks
 		{
-			'price': float,   ## Price for ask
-			'amount': float   ## Amount asked
+			'price': decimal,   ## Price for ask
+			'amount': decimal   ## Amount asked
 		}, ...
 	]
 }
@@ -75,12 +75,12 @@ pip install bitstampy
 ##                 - string - api.TRANSACTIONS_SORT_DESCENDING or
 ##                 -        - api.TRANSACTIONS_SORT_ASCENDING
 > bitstampy.transactions()
-[                         # List of transactions, length 'limit'
+[                            # List of transactions, length 'limit'
 	{
-		'date': int,      ## Datetime
-		'tid': string,    ## Transaction ID
-		'price': float,   ## Transaction price
-		'amount': float   ## Transaction amount
+		'date': datetime,   ## Datetime
+		'tid': string,      ## Transaction ID
+		'price': decimal,   ## Transaction price
+		'amount': decimal   ## Transaction amount
 	}, ...
 ]
 ```
@@ -91,8 +91,8 @@ pip install bitstampy
 # Bitstamp's Dollar to Euro conversion rate
 > bitstampy.eur_usd_conversion_rate()
 {
-	'sell': float,   # Conversion rate for selling
-	'buy': float     # Conversion rate for buying
+	'sell': decimal,   # Conversion rate for selling
+	'buy': decimal     # Conversion rate for buying
 }
 ```
 
@@ -124,13 +124,13 @@ get you access to do actual *stuff* stuff with your account.
 # Your account balance
 > bitstampy.account_balance(c, k, s)
 {
-	'usd_balance': float,     # US Dollar balance
-	'btc_balance': float,     # Bitcoin balance
-	'usd_reserved': float,    # US Dollars reserved in open orders
-	'btc_reserved': float,    # Bitcoins reserved in open orders
-	'usd_available': float,   # US Dollars available
-	'btc_available': float,   # Bitcoins available
-	'fee': float              # Account trading fee (in %)
+	'usd_balance': decimal,     # US Dollar balance
+	'btc_balance': decimal,     # Bitcoin balance
+	'usd_reserved': decimal,    # US Dollars reserved in open orders
+	'btc_reserved': decimal,    # Bitcoins reserved in open orders
+	'usd_available': decimal,   # US Dollars available
+	'btc_available': decimal,   # Bitcoins available
+	'fee': decimal              # Account trading fee (in %)
 }
 ```
 
@@ -149,16 +149,16 @@ get you access to do actual *stuff* stuff with your account.
 > bitstampy.user_transactions(c, k, s)
 [                           # List of transactions, length 'limit'
 	{
-		'datetime': int,    ## Datetime
-		'id': string,       ## Transaction ID
-		'type': string,     ## Transaction type - one of
-		                    ### api.USER_TRANSACTIONS_TYPE_DEPOSIT,
-		                    ### api.USER_TRANSACTIONS_TYPE_WITHDRAWAL,
-		                    ### api.USER_TRANSACTIONS_TYPE_MARKET_TRADE
-		'usd': float,       ## US Dollar amount
-		'btc': float,       ## Bitcoin amount
-		'fee': float,       ## Transaction fee (in %)
-		'order_id': float   ## Transaction amount
+		'datetime': datetime,   ## Datetime
+		'id': string,           ## Transaction ID
+		'type': string,         ## Transaction type - one of
+		                        ### api.USER_TRANSACTIONS_TYPE_DEPOSIT,
+		                        ### api.USER_TRANSACTIONS_TYPE_WITHDRAWAL,
+		                        ### api.USER_TRANSACTIONS_TYPE_MARKET_TRADE
+		'usd': decimal,         ## US Dollar amount
+		'btc': decimal,         ## Bitcoin amount
+		'fee': decimal,         ## Transaction fee (in %)
+		'order_id': decimal     ## Transaction amount
 	}, ...
 ]
 ```
@@ -170,13 +170,13 @@ get you access to do actual *stuff* stuff with your account.
 > bitstampy.open_orders(c, k, s)
 [                          # List of open orders
 	{
-		'datetime': int,   ## Datetime
-		'id': string,      ## Order ID
-		'type': string,    ## Order type - one of
-		                   ### api.OPEN_ORDERS_TYPE_BUY,
-		                   ### api.OPEN_ORDERS_TYPE_SELL
-		'price': float,    ## Order price
-		'amount': float    ## Order amount
+		'datetime': datetime,   ## Datetime
+		'id': string,           ## Order ID
+		'type': string,         ## Order type - one of
+		                        ### api.OPEN_ORDERS_TYPE_BUY,
+		                        ### api.OPEN_ORDERS_TYPE_SELL
+		'price': decimal,       ## Order price
+		'amount': decimal       ## Order amount
 	}, ...
 ]
 ```
@@ -202,13 +202,13 @@ True / False   # Returns boolean success
 ##        - float
 > bitstampy.buy_limit_order(c, k, s)
 {
-	'datetime': int,   # Datetime placed
-	'id': string,      # Order ID
-	'type': string,    # Order type - one of 
-	                   ## api.BUY_LIMIT_ORDER_TYPE_BUY,
-	                   ## api.BUY_LIMIT_ORDER_TYPE_SELL
-	'price': float,    # Placed order price
-	'amount': float    # Placed order amount
+	'datetime': datetime,   # Datetime placed
+	'id': string,           # Order ID
+	'type': string,         # Order type - one of 
+	                        ## api.BUY_LIMIT_ORDER_TYPE_BUY,
+	                        ## api.BUY_LIMIT_ORDER_TYPE_SELL
+	'price': decimal,       # Placed order price
+	'amount': decimal       # Placed order amount
 }
 ```
 
@@ -222,13 +222,13 @@ True / False   # Returns boolean success
 ##        - float
 > bitstampy.sell_limit_order(c, k, s)
 {
-	'datetime': int,   # Datetime placed
-	'id': string,      # Order ID
-	'type': string,    # Order type - one of 
-	                   ## api.SELL_LIMIT_ORDER_TYPE_BUY,
-	                   ## api.SELL_LIMIT_ORDER_TYPE_SELL
-	'price': float,    # Placed order price
-	'amount': float    # Placed order amount
+	'datetime': datetime,   # Datetime placed
+	'id': string,           # Order ID
+	'type': string,         # Order type - one of 
+	                        ## api.SELL_LIMIT_ORDER_TYPE_BUY,
+	                        ## api.SELL_LIMIT_ORDER_TYPE_SELL
+	'price': decimal,       # Placed order price
+	'amount': decimal       # Placed order amount
 }
 ```
 
@@ -240,8 +240,8 @@ True / False   # Returns boolean success
 ##      - string
 > bitstampy.check_bitstamp_code(c, k, s)
 {
-	'usd': float,   # US Dollar amount in the code
-	'btc': float    # Bitcoin amount in the code
+	'usd': decimal, # US Dollar amount in the code
+	'btc': decimal  # Bitcoin amount in the code
 }
 ```
 
@@ -253,8 +253,8 @@ True / False   # Returns boolean success
 ##      - string
 > bitstampy.redeem_bitstamp_code(c, k, s)
 {
-	'usd': float,   # US Dollar amount added to account by code
-	'btc': float    # Bitcoin amount added to account by code
+	'usd': decimal,   # US Dollar amount added to account by code
+	'btc': decimal    # Bitcoin amount added to account by code
 }
 ```
 
@@ -265,23 +265,23 @@ True / False   # Returns boolean success
 > bitstampy.withdrawal_requests(c, k, s)
 [                           # List of withdrawal requests
 	{
-		'datetime': int,    ## Datetime
-		'id': string,       ## Withdrawal ID
-		'type': string,     ## Request type - one of
-		                    ### api.WITHDRAWAL_REQUEST_TYPE_SEPA,
-		                    ### api.WITHDRAWAL_REQUEST_TYPE_BITCOIN,
-		                    ### api.WITHDRAWAL_REQUEST_TYPE_WIRE,
-		                    ### api.WITHDRAWAL_REQUEST_TYPE_BITSTAMP_CODE_1,
-		                    ### api.WITHDRAWAL_REQUEST_TYPE_BITSTAMP_CODE_2,
-		                    ### api.WITHDRAWAL_REQUEST_TYPE_MTGOX
-		'status': string,   ## Request status - one of
-		                    ### api.WITHDRAWAL_REQUEST_STATUS_OPEN,
-		                    ### api.WITHDRAWAL_REQUEST_STATUS_IN_PROCESS,
-		                    ### api.WITHDRAWAL_REQUEST_STATUS_FINISHED,
-		                    ### api.WITHDRAWAL_REQUEST_STATUS_CANCELLED,
-		                    ### api.WITHDRAWAL_REQUEST_STATUS_FAILED
-		'amount': float,    ## Request amount
-		'data': string      ## Extra data (specific to type)
+		'datetime': datetime,   ## Datetime
+		'id': string,           ## Withdrawal ID
+		'type': string,         ## Request type - one of
+		                        ### api.WITHDRAWAL_REQUEST_TYPE_SEPA,
+		                        ### api.WITHDRAWAL_REQUEST_TYPE_BITCOIN,
+		                        ### api.WITHDRAWAL_REQUEST_TYPE_WIRE,
+		                        ### api.WITHDRAWAL_REQUEST_TYPE_BITSTAMP_CODE_1,
+		                        ### api.WITHDRAWAL_REQUEST_TYPE_BITSTAMP_CODE_2,
+		                        ### api.WITHDRAWAL_REQUEST_TYPE_MTGOX
+		'status': string,       ## Request status - one of
+		                        ### api.WITHDRAWAL_REQUEST_STATUS_OPEN,
+		                        ### api.WITHDRAWAL_REQUEST_STATUS_IN_PROCESS,
+		                        ### api.WITHDRAWAL_REQUEST_STATUS_FINISHED,
+		                        ### api.WITHDRAWAL_REQUEST_STATUS_CANCELLED,
+		                        ### api.WITHDRAWAL_REQUEST_STATUS_FAILED
+		'amount': decimal,      ## Request amount
+		'data': string          ## Extra data (specific to type)
 	}, ...
 ]
 ```

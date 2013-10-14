@@ -15,7 +15,7 @@ print('Order book %s' % book)
 time.sleep(1.1)
 
 # Transactions
-print('Transactions %s' % api.transactions(limit = 5))
+print('Transactions %s' % api.transactions(limit=5))
 time.sleep(1.1)
 
 # EUR / USD
