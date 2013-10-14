@@ -36,10 +36,8 @@ class APICall(object):
 
         If the dictionary is just being altered, then no return is necessary.
         Alternatively, a totally different response can be returned.
-
-        Subclasses must override this method.
         """
-        raise NotImplementedError()
+        return
 
     def call(self, **params):
         # Form request
