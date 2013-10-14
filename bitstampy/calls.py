@@ -104,6 +104,10 @@ class APIBitcoinDepositAddressCall(APIPrivateCall):
     url = 'bitcoin_deposit_address/'
 
 
+class APIBitcoinWithdrawalCall(APIPrivateCall):
+    url = 'bitcoin_withdrawal/'
+
+
 class APIBuyLimitOrderCall(APIPrivateCall):
     url = 'buy/'
 
@@ -223,10 +227,6 @@ class APIUserTransactionsCall(APIPrivateCall):
             tx['usd'] = Decimal(tx['usd'])
             tx['btc'] = Decimal(tx['btc'])
             tx['fee'] = Decimal(tx['fee'])
-
-
-class APIWithdrawalCall(APIPrivateCall):
-    url = 'bitcoin_withdrawal/'
 
 
 class APIWithdrawalRequestsCall(APIPrivateCall):

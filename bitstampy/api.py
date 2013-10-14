@@ -49,6 +49,13 @@ def bitcoin_deposit_address(client_id, api_key, api_secret):
     )
 
 
+def bitcoin_withdrawal(client_id, api_key, api_secret, amount, address):
+    return (
+        calls.APIBitcoinWithdrawalCall(client_id, api_key, api_secret)
+        .call(amount=amount, address=address)
+    )
+
+
 def buy_limit_order(client_id, api_key, api_secret, amount, price):
     return (
         calls.APIBuyLimitOrderCall(client_id, api_key, api_secret)
@@ -137,13 +144,6 @@ def user_transactions(
     return (
         calls.APIUserTransactionsCall(client_id, api_key, api_secret)
         .call(offset=offset, limit=limit, sort=sort)
-    )
-
-
-def withdrawal(client_id, api_key, api_secret, amount, address):
-    return (
-        calls.APIWithdrawalCall(client_id, api_key, api_secret)
-        .call(amount=amount, address=address)
     )
 
 
