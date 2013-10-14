@@ -116,9 +116,6 @@ class APIBuyLimitOrderCall(APIPrivateCall):
 class APICancelOrderCall(APIPrivateCall):
     url = 'cancel_order/'
 
-    def _process_response(self, response):
-        return (response == True)
-
 
 class APICheckBitstampCodeCall(APIPrivateCall):
     url = 'check_code/'
@@ -176,9 +173,6 @@ class APIRippleDepositAddressCall(APIPrivateCall):
 class APIRippleWithdrawalCall(APIPrivateCall):
     url = 'ripple_withdrawal/'
 
-    def _process_response(self, response):
-        return (response == True)
-
 
 class APISellLimitOrderCall(APIPrivateCall):
     url = 'sell/'
@@ -233,9 +227,6 @@ class APIUserTransactionsCall(APIPrivateCall):
 
 class APIWithdrawalCall(APIPrivateCall):
     url = 'bitcoin_withdrawal/'
-
-    def _process_response(self, response):
-        return (response == True)
 
 
 class APIWithdrawalRequestsCall(APIPrivateCall):
