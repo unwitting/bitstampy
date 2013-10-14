@@ -1,3 +1,4 @@
+import datetime
 import hashlib
 import hmac
 import requests
@@ -5,6 +6,15 @@ import time
 from decimal import Decimal
 
 _API_URL = 'https://www.bitstamp.net/api/'
+
+
+def dt(timestamp):
+    """
+    Convert a unix timestamp to a datetime object.
+    """
+    if not timestamp:
+        return None
+    return datetime.datetime.fromtimestamp(int(timestamp))
 
 
 class APIError(Exception):
@@ -91,7 +101,7 @@ class APIBuyLimitOrderCall(APIPrivateCall):
     url = 'buy/'
 
     def _process_response(self, response):
-        response['datetime'] = int(response['datetime'])
+        response['datetime'] = dt(response['datetime'])
         response['price'] = Decimal(response['price'])
         response['amount'] = Decimal(response['amount'])
 
@@ -123,7 +133,7 @@ class APIOrderBookCall(APICall):
     url = 'order_book/'
 
     def _process_response(self, response):
-        response['timestamp'] = int(response['timestamp'])
+        response['timestamp'] = dt(response['timestamp'])
         response['bids'] = [{
             'price': Decimal(price),
             'amount': Decimal(amount)
@@ -139,7 +149,7 @@ class APIOpenOrdersCall(APIPrivateCall):
 
     def _process_response(self, response):
         for order in response:
-            order['datetime'] = int(order['datetime'])
+            order['datetime'] = dt(order['datetime'])
             order['price'] = Decimal(order['price'])
             order['amount'] = Decimal(order['amount'])
 
@@ -167,7 +177,7 @@ class APISellLimitOrderCall(APIPrivateCall):
     url = 'sell/'
 
     def _process_response(self, response):
-        response['datetime'] = int(response['datetime'])
+        response['datetime'] = dt(response['datetime'])
         response['price'] = Decimal(response['price'])
         response['amount'] = Decimal(response['amount'])
 
@@ -180,7 +190,7 @@ class APITickerCall(APICall):
         response['high'] = Decimal(response['high'])
         response['low'] = Decimal(response['low'])
         response['volume'] = Decimal(response['volume'])
-        response['timestamp'] = int(response['timestamp'])
+        response['timestamp'] = dt(response['timestamp'])
         response['bid'] = Decimal(response['bid'])
         response['ask'] = Decimal(response['ask'])
 
@@ -190,7 +200,7 @@ class APITransactionsCall(APICall):
 
     def _process_response(self, response):
         for tx in response:
-            tx['date'] = int(tx['date'])
+            tx['date'] = dt(tx['date'])
             tx['price'] = Decimal(tx['price'])
             tx['amount'] = Decimal(tx['amount'])
 
@@ -208,7 +218,7 @@ class APIUserTransactionsCall(APIPrivateCall):
 
     def _process_response(self, response):
         for tx in response:
-            tx['datetime'] = int(tx['datetime'])
+            tx['datetime'] = dt(tx['datetime'])
             tx['usd'] = Decimal(tx['usd'])
             tx['btc'] = Decimal(tx['btc'])
             tx['fee'] = Decimal(tx['fee'])
@@ -226,5 +236,5 @@ class APIWithdrawalRequestsCall(APIPrivateCall):
 
     def _process_response(self, response):
         for wr in response:
-            wr['datetime'] = int(wr['datetime'])
+            wr['datetime'] = dt(wr['datetime'])
             wr['amount'] = Decimal(wr['amount'])
