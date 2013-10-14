@@ -59,6 +59,7 @@ pip install bitstampy
 			'amount': float   ## Amount asked
 		}, ...
 	]
+}
 ```
 
 ### Transactions ###
