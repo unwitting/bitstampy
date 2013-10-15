@@ -16,7 +16,7 @@ pip install bitstampy
 # Usage #
 
 ```python
-> import bitstampy
+> from bitstampy import api
 ```
 
 ## Public calls (no API authorisation needed) ##
@@ -25,7 +25,7 @@ pip install bitstampy
 
 ```python
 # Ticker information
-> bitstampy.ticker()
+> api.ticker()
 {
     'timestamp': datetime,   # Datetime
     'volume': decimal,       # Last 24 hours volume
@@ -44,7 +44,7 @@ pip install bitstampy
 # Parameters
 ## [group = True] - Group orders with same price?
 ##                - boolean
-> bitstampy.order_book()
+> api.order_book()
 {
     'timestamp': datetime,      # Datetime
     'bids': [                   # List of bids
@@ -74,7 +74,7 @@ pip install bitstampy
 ## [sort = 'desc'] - Results are sorted by datetime
 ##                 - string - api.TRANSACTIONS_SORT_DESCENDING or
 ##                 -        - api.TRANSACTIONS_SORT_ASCENDING
-> bitstampy.transactions()
+> api.transactions()
 [                           # List of transactions, length 'limit'
     {
         'date': datetime,   ## Datetime
@@ -89,7 +89,7 @@ pip install bitstampy
 
 ```python
 # Bitstamp's Dollar to Euro conversion rate
-> bitstampy.eur_usd_conversion_rate()
+> api.eur_usd_conversion_rate()
 {
     'sell': decimal,   # Conversion rate for selling
     'buy': decimal     # Conversion rate for buying
@@ -122,7 +122,7 @@ get you access to do actual *stuff* stuff with your account.
 
 ```python
 # Your account balance
-> bitstampy.account_balance(c, k, s)
+> api.account_balance(c, k, s)
 {
     'usd_balance': decimal,     # US Dollar balance
     'btc_balance': decimal,     # Bitcoin balance
@@ -146,7 +146,7 @@ get you access to do actual *stuff* stuff with your account.
 ## [sort = 'desc'] - Results are sorted by datetime
 ##                 - string - api.USER_TRANSACTIONS_SORT_DESCENDING or
 ##                 -        - api.USER_TRANSACTIONS_SORT_ASCENDING
-> bitstampy.user_transactions(c, k, s)
+> api.user_transactions(c, k, s)
 [                               # List of transactions, length 'limit'
     {
         'datetime': datetime,   ## Datetime
@@ -167,7 +167,7 @@ get you access to do actual *stuff* stuff with your account.
 
 ```python
 # Your open orders
-> bitstampy.open_orders(c, k, s)
+> api.open_orders(c, k, s)
 [                               # List of open orders
     {
         'datetime': datetime,   ## Datetime
@@ -188,7 +188,7 @@ get you access to do actual *stuff* stuff with your account.
 # Parameters
 ## id - ID of order to cancel
 ##    - string
-> bitstampy.cancel_order(c, k, s)
+> api.cancel_order(c, k, s)
 True / False   # Returns boolean success
 ```
 
@@ -200,7 +200,7 @@ True / False   # Returns boolean success
 ##        - float
 ## price  - Price to offer
 ##        - float
-> bitstampy.buy_limit_order(c, k, s)
+> api.buy_limit_order(c, k, s)
 {
     'datetime': datetime,   # Datetime placed
     'id': string,           # Order ID
@@ -220,7 +220,7 @@ True / False   # Returns boolean success
 ##        - float
 ## price  - Price to ask for
 ##        - float
-> bitstampy.sell_limit_order(c, k, s)
+> api.sell_limit_order(c, k, s)
 {
     'datetime': datetime,   # Datetime placed
     'id': string,           # Order ID
@@ -238,7 +238,7 @@ True / False   # Returns boolean success
 # Check the value of a bitstamp code
 ## code - Bitstamp code
 ##      - string
-> bitstampy.check_bitstamp_code(c, k, s)
+> api.check_bitstamp_code(c, k, s)
 {
     'usd': decimal,   # US Dollar amount in the code
     'btc': decimal    # Bitcoin amount in the code
@@ -251,7 +251,7 @@ True / False   # Returns boolean success
 # Redeem a bitstamp code
 ## code - Bitstamp code
 ##      - string
-> bitstampy.redeem_bitstamp_code(c, k, s)
+> api.redeem_bitstamp_code(c, k, s)
 {
     'usd': decimal,   # US Dollar amount added to account by code
     'btc': decimal    # Bitcoin amount added to account by code
@@ -262,7 +262,7 @@ True / False   # Returns boolean success
 
 ```python
 # Get list of withdrawal requests
-> bitstampy.withdrawal_requests(c, k, s)
+> api.withdrawal_requests(c, k, s)
 [                               # List of withdrawal requests
     {
         'datetime': datetime,   ## Datetime
@@ -294,7 +294,7 @@ True / False   # Returns boolean success
 ##         - decimal
 ## address - bitcoin address to withdraw to
 ##         - string
-> bitstampy.bitcoin_withdrawal(c, k, s)
+> api.bitcoin_withdrawal(c, k, s)
 True / False   # Returns boolean success
 ```
 
@@ -302,7 +302,7 @@ True / False   # Returns boolean success
 
 ```python
 # Get your account's address for bitcoin deposits
-> bitstampy.bitcoin_deposit_address(c, k, s)
+> api.bitcoin_deposit_address(c, k, s)
 # Returns deposit address as string
 ```
 
@@ -310,7 +310,7 @@ True / False   # Returns boolean success
 
 ```python
 # Retrieve list of as-yet unconfirmed bitcoin deposits into your account
-> bitstampy.unconfirmed_bitcoin_deposits(c, k, s)
+> api.unconfirmed_bitcoin_deposits(c, k, s)
 [                              # List of unconfirmed deposits
     {
         'amount': decimal,     ## Amount deposited
