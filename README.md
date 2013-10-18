@@ -186,8 +186,8 @@ get you access to do actual *stuff* stuff with your account.
 ```python
 # Cancel an order
 # Parameters
-## id - ID of order to cancel
-##    - string
+## order_id - ID of order to cancel
+##          - string
 > api.cancel_order(c, k, s)
 True / False   # Returns boolean success
 ```
