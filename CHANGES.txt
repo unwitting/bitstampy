@@ -5,3 +5,5 @@ v0.0.4, 2013-10-13 -- Added remaining calls, moved to OO approach
 v0.0.5, 2013-10-14 -- Thread- and reuse-safe authorised calls
 v0.0.6, 2013-10-14 -- Bug fixing in datetime response parsing
 v0.0.7, 2013-10-15 -- Fixing return (type, sort etc) constants
+v0.0.8, 2014-03-18 -- Increased nonce precision
+v0.0.9, 2017-05-29 -- Incorporate Python3 compat fix
