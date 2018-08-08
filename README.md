@@ -1,4 +1,12 @@
-# bitstampy #
+# NOTICE: THIS REPOSITORY IS NO LONGER ACTIVELY MAINTAINED
+
+It is highly unlikely that I will respond to PRs and questions about usage.
+
+This library was written a long time ago and not kept up to date. It may still hold value for you but it's increasingly out of date with the modern Bitstampy API and Python versions.
+
+I heartily encourage a fork and welcome any contact about taking over ownership - find me at https://twitter.com/unwttng.
+
+# bitstampy
 
 [Bitstamp API](https://www.bitstamp.net/api/) wrapper for Python
 
